@@ -15,14 +15,17 @@ int main()
     */
 
     int n, ** G1;
-    G1 = create_matrice(4,G1);
-    G1 = remplir_matrice_solution(G1,4);
-    bool x = veri_lignes_matrice(G1,4);
+    G1 = create_matrice(8,G1);
+    G1 = remplir_matrice_solution(G1,8);
+    afficher_matrice(G1,8);
+    bool x = verif_colonnes_matrice(G1,8);
     if(x==false){
         printf("\nCe n'est pas valide");
     }else{
         printf("\nC'est valide");
     }
+
+    afficher_matrice(G1,4);
     return 0;
 
     /* grille jeux 4*4/
@@ -36,17 +39,8 @@ int main()
     */
     /* faire la grille jeux et la matrice 8*8 et 16*16 */
     /*int i, j, lig = 4, col = 4;
-    for (i = 0; i < lig; i++)
-    {
-        for (j = 0; j < col; j++)
-        {
-            printf("%d \t", G1[i][j]);
-        }
-        printf("\n");
-    }
-
     do {
-        printf("Voulez vous une matrice 4 ou 8 ?");
+        printf("Voulez-vous une matrice 4 ou 8 ?");
         scanf("%d", &n);
     }while (n!=4 && n!=8);
     create_matrice(n, M);*/
