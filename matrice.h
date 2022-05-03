@@ -16,4 +16,6 @@ bool rejouer();
 int menu();
 bool veri_lignes_matrice( int** M, int n);
 void afficher_matrice(int** M,int n);
+bool verif_identique( int** M, int n);
+bool coup_correct(int **M,int n);
 #endif //UNTITLED6_MATRICE_H
