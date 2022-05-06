@@ -18,7 +18,7 @@ int main()
     G1 = create_matrice(8,G1);
     G1 = remplir_matrice_solution(G1,8);
     afficher_matrice(G1,8);
-    bool x = verif_colonnes_matrice(G1,8);
+    bool x = verif_colonnes_matrice(G1,8,true);
     if(x==false){
         printf("\nCe n'est pas valide");
     }else{

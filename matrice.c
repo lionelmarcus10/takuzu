@@ -24,6 +24,52 @@ int** create_matrice(int n, int** M)
     }
     return M;
 }
+
+int** create_masque(int n, int** M)
+{
+    int i =0;
+    int nb, lig, col;
+    M = (int**) malloc(n * sizeof(int*));
+    for(i;i<n;i++)
+    {
+        *(M+i) = (int*) malloc(n * sizeof(int));
+        for(int k=0;k<n;k++)
+        {
+            M[i][k] = 0;
+        }
+    }
+    if(n==4)
+    {
+        do{
+            printf("Combien de cases visibles voulez vous avoir (pas plus 6) ?");
+            scanf("%d", &nb);
+        }while(nb >6);
+    }
+    else
+    {
+        if(n==8);
+        do{
+            printf("Combien de cases visibles voulez vous avoir (pas plus 28) ?");
+            scanf("%d", &nb);
+        }while(nb >28);
+    }
+    for(int i=0; i < nb; i++)
+    {
+        do{
+            printf("Veuillez saisir la ligne du masque numéro %d", i);
+            scanf("%d", lig);
+        }while(lig < 0 || lig >= n);
+
+        do{
+            printf("Veuillez saisir la colonne du masque numéro %d", i);
+            scanf("%d", col);
+        }while(col < 0 || col >= n);
+
+        M[lig][col] = 1;
+    }
+    return M;
+}
+
 bool comparer_liste(int n,int **M1, int **M2)
 {
     for (int i=0;i<n;i++)
@@ -36,6 +82,7 @@ bool comparer_liste(int n,int **M1, int **M2)
     }
     return true;
 }
+
 
 bool rejouer()
 {
@@ -55,45 +102,52 @@ int menu()
     do{
         printf("\nSaisir: \n1 - Resoudre une grille\n2-  Résoudre automatiquement une grille de Takuzu\n3- Générer une grille de Takuzu");
     }while(a!=1 && a!=2 && a!=3);
-    switch(a){
-        case 1:{
-            int taille,b;
-            do{
-                printf("\nChoisir la taille de la grille : \n \t1- 4*4\n\t2- 8*8\n\t3- 16*16\nSaisir un numero: ");
-                scanf("%d",&taille);
-            }while(taille != 1 && taille != 2 && taille !=3);
 
-            do {
-                printf("\nSaisir: \n\t1 - Pour saisir manuellement un masque\n\t2 - Pour generer automatiquement un masque \n\t3 - Pour jouer");
-                scanf("%d", &b);
-            }while(b!=1 && b!=2 && b!=3);
-            break;
-        }
-        case 2:{
-            break;
-        }
-        default:{
-            break;
-        }
-    }
     return a;
 }
 
+int** choix_menu(int a){
+    int **M;
+    int taille, b;
+    do{
+        printf("\nChoisir la taille de la grille : \n \t1- 4*4\n\t2- 8*8\n\t3- 16*16\nSaisir un numero: ");
+        scanf("%d",&taille);
+    }while(taille != 1 && taille != 2 && taille !=3);
+
+    do {
+        printf("\nSaisir: \n\t1 - Pour saisir manuellement un masque\n\t2 - Pour generer automatiquement un masque \n\t3 - Pour jouer");
+        scanf("%d", &b);
+    }while(b!=1 && b!=2 && b!=3);
+    switch(a){
+        case 1:
+        {
+            create_masque(taille, M);
+            break;
+        }
+        default:
+        {
+            create_matrice(taille, M);
+            remplir_grille_jeux(M, taille);
+            break;
+        }
+    }
+}
 
 void afficher_matrice(int ** M, int n){
     int j ;
     printf("\n");
     for (int i = 0; i <n; i++)
+    {
+
+        for (j = 0; j <n; j++)
         {
-            
-            for (j = 0; j <n; j++)
-            {
-                
-                printf("%d \t", M[i][j]);
-            }
-            printf("\n");
+
+            printf("%d \t", M[i][j]);
         }
+        printf("\n");
+    }
 }
+
 /* -------------------------- */
 
 // remplir matrice solution 16*16
@@ -112,8 +166,7 @@ void afficher_matrice(int ** M, int n){
 
 
 
-bool verif_lignes_matrice( int** M, int n)
-{
+bool verif_lignes_matrice( int** M, int n,bool indice){
     int i,somme0,somme1,j;
     bool inc=true;
     //parcours lignes
@@ -135,13 +188,26 @@ bool verif_lignes_matrice( int** M, int n)
             int k;
             for(k=0;k<(n-2);k++){
                 if ((M[i][k] == M[i][k+1]) && (M[i][k] == M[i][k+2])) {
-                    printf("%d = %d  = %d pour k = %d donc ligne %d  pas valide \n", M[i][k], M[i][k+1], M[i][k+2],k+1,i+1);
-                    inc = false;
+
+                    if(indice == true){
+                        printf("%d = %d  = %d pour k = %d donc ligne %d  pas valide\n", M[i][k], M[i][k+1], M[i][k+2],k+1,i+1);
+                        inc = false;
+                        if(M[i][k]==0)
+                        {
+                            printf("Entre deux 0, il ne peut y avoir qu'un 1");
+                            printf("A gauche,a droite d’une série de deux 0, il ne peut y avoir qu’un 1 ");
+                        }
+                        else{
+                            printf("Entre deux 1, il ne peut y avoir qu'un 0 ");
+                            printf("A gauche,a droite d’une série de deux 1, il ne peut y avoir qu’un 0 ");
+                        }
+                    }
                     break;
                 }
             }
         }else {
-            printf("La ligne %d n'a pas le meme nombre de 0 et de 1\n", i + 1);
+            if(indice == true)
+                printf("La ligne %d n'a pas le meme nombre de 0 et de 1\n", i + 1);
             inc = false;
         }
     }
@@ -149,12 +215,12 @@ bool verif_lignes_matrice( int** M, int n)
         return false;
     return true;
 }
-bool verif_colonnes_matrice( int** M, int n)
-{
-    int i,somme0,somme1,b;
-    bool inc=true;
-    //parcours colonne 
-    for(i=0; i< n; i++) {
+
+bool verif_colonnes_matrice( int** M, int n, bool indice) {
+    int i, somme0, somme1, b;
+    bool inc = true;
+    //parcours colonne
+    for (i = 0; i < n; i++) {
         somme0 = 0;
         somme1 = 0;
         for (b = 0; b < n; b++) {
@@ -172,45 +238,52 @@ bool verif_colonnes_matrice( int** M, int n)
             int k;
             for (k = 0; k < (n - 2); k++) {
                 if ((M[k][i] == M[k + 1][i]) && (M[k][i] == M[k + 2][i])) {
-                    printf("%d = %d  = %d donc la colonne %d  n'est pas valide \n", M[k][i], M[k + 1][i], M[i][k + 2],
-                           i + 1);
-                    inc = false;
-                    break;
+                    if (indice == true) {
+                        printf("%d = %d  = %d donc la colonne %d  n'est pas valide \n", M[k][i], M[k + 1][i],
+                               M[i][k + 2], i + 1);
+                        inc = false;
+                        if (M[k][i] == 0) {
+                            printf("Entre deux 0, il ne peut y avoir qu'un 1");
+                            printf("Au dessus,en dessous d’une série de deux 0, il ne peut y avoir qu’un 1");
+                        } else {
+                            printf("Entre deux 1, il ne peut y avoir qu'un 0");
+                            printf("Au dessus,en dessous d’une série de deux 1, il ne peut y avoir qu’un 0");
+                        }
+                        break;
+                    }
                 }
             }
         } else {
-            printf("La colonne %d n'a pas le meme nombre de 0 et de 1\n", i + 1);
+            if (indice == true)
+                printf("La colonne %d n'a pas le meme nombre de 0 et de 1\n", i + 1);
             inc = false;
         }
+        if (inc == false)
+            return false;
+        return true;
     }
-    if(inc == false)
-        return false;
-    return true;
 }
-
-
 bool verif_identique( int** M, int n)
 {
-    int i, j,k,sl, sc;
+    int i, j, k, sl, sc;
     bool inc = false;
     // lignes identique
     //parcours ligne principale
-    for(i=0;i<n-1;i++){
+    for (i = 0; i < n - 1; i++) {
         //parcours ligne secondaire
-        for(j=i+1;j<n;j++){
+        for (j = i + 1; j < n; j++) {
             //parcours colonnes
             sl = 0;
-            for(k=0;k<n;k++){
-                if(M[i][k] == M[j][k])
+            for (k = 0; k < n; k++) {
+                if (M[i][k] == M[j][k])
                     sl++;
             }
-            if(sl==n){
-                printf("Les lignes %d et %d sont identique\n",i+1,j+1);
+            if (sl == n) {
+                printf("Les lignes %d et %d sont identique\n", i + 1, j + 1);
                 inc = false;
             }
         }
     }
-
     //colonne identique
     // parcours colonne principale
     for(i=0;i<n-1;i++){
@@ -228,17 +301,15 @@ bool verif_identique( int** M, int n)
             }
         }
     }
-
-
     if(inc == true)
         return true;
     return false;
 }
 
-bool coup_correct(int ** M,int n){
+bool coup_correct(int ** M,int n, bool indice){
     //verif conditions
-    bool fconditions_line = verif_lignes_matrice(M,n);
-    bool fconditions_col = verif_colonnes_matrice(M,n);
+    bool fconditions_line = verif_lignes_matrice(M,n,indice);
+    bool fconditions_col = verif_colonnes_matrice(M,n,indice);
     // verif identique
     bool sconditions = verif_identique(M,n);
     if(fconditions_line == false || fconditions_col == false || sconditions == false)
@@ -299,7 +370,7 @@ int ** remplir_matrice_solution(int **M,int n){
             *(*(M+2)+5) = 0;
             *(*(M+2)+6) = 1;
             *(*(M+2)+7) = 0;
-            
+
             *(*(M+3)+0) = 0;
             *(*(M+3)+1) = 1;
             *(*(M+3)+2) = 0;
@@ -347,7 +418,7 @@ int ** remplir_matrice_solution(int **M,int n){
             return M;
             break;
         }
-        // le default est pour la matrice 16 * 16
+            // le default est pour la matrice 16 * 16
         defaulf:{
             break;
         }
