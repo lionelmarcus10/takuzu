@@ -18,8 +18,10 @@ int** create_matrice(int n, int** M)
     M = (int**) malloc(n * sizeof(int*));
     for(i;i<n;i++){
         *(M+i) = (int*) malloc(n * sizeof(int));
+        for(int k=0;k<n;k++){
+            M[i][k] = -1;
+        }
     }
-    printf("Matrice created \n");
     return M;
 }
 bool comparer_liste(int n,int **M1, int **M2)
@@ -347,6 +349,60 @@ int ** remplir_matrice_solution(int **M,int n){
         }
         // le default est pour la matrice 16 * 16
         defaulf:{
+            break;
+        }
+    }
+}
+
+int ** remplir_grille_jeux(int **M,int n){
+    switch(n){
+        case 4:{
+            M[0][0] = 1;
+            M[1][3] = 1;
+            M[2][0] = 0;
+            M[2][3] = 1;
+            M[2][2] = 1;
+            M[3][1] = 0;
+            return M;
+            break;
+        }
+        case 8:{
+            M[0][0] = 1;
+            M[0][2] = 1;
+            M[0][3] = 1;
+            M[0][5] = 1;
+            M[0][7] = 0;
+
+            M[1][2] = 1;
+
+            M[2][0] = 0;
+            M[2][7] = 0;
+
+            M[3][0] = 0;
+            M[3][2] = 0;
+            M[3][5] = 1;
+            M[3][6] = 1;
+
+            M[4][0] = 1;
+            M[4][4] = 0;
+            M[4][7] = 1;
+
+            M[5][4] = 1;
+
+            M[6][1] = 0;
+            M[6][2] = 1;
+            M[6][3] = 1;
+            M[6][4] = 0;
+            M[6][5] = 1;
+
+            M[7][1] = 1;
+            M[7][3] = 0;
+            M[7][6] = 0;
+
+            return M;
+            break;
+        }
+        default:{
             break;
         }
     }
