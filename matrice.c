@@ -70,6 +70,58 @@ int** create_masque(int n, int** M)
     return M;
 }
 
+int** create_mat_masq(int n, int **M)
+{
+    bool cond = false;
+
+    do{
+
+        for (int i=0; i < n ; i++){
+            for (int j=0; j < n; j++){
+                if (M[i][j]==0)
+                {
+                    M[i][j]=-1;
+                }
+                else
+                {
+                    if(M[i][j]==1)
+                    {                    
+                        srand(time(NULL));
+                        int nombre = rand() % 2;
+                        M[i][j]=nombre;
+                    }
+                }
+            }
+        }
+
+
+        // verif col: 
+        for (int i=0; i < n ; i++)
+        {
+            for (int k=0; k < n; k++)
+            {
+                if((M[i][k] == M[i][k+1]) && (M[i][k] == M[i][k+2])){
+                    cond = true;
+                    break;
+                }
+            }
+        }
+        // verif lig
+        for (int i=0; i < n ; i++)
+        {
+            for (int k=0; k < n; k++)
+            {
+                if((M[i][k] == M[i+1][k]) && (M[i][k] == M[i+2][k])){
+                    cond = true;
+                    break;
+                }
+            }
+        }
+    }while(cond == true);
+
+    return M;
+}
+
 bool comparer_liste(int n,int **M1, int **M2)
 {
     for (int i=0;i<n;i++)
@@ -122,6 +174,7 @@ int** choix_menu(int a){
         case 1:
         {
             create_masque(taille, M);
+            
             break;
         }
         default:
@@ -184,7 +237,7 @@ bool verif_lignes_matrice( int** M, int n,bool indice){
         }
 
         // si le nombre de zero et de 1 est correct, verifier si il n'y a pas plus de 2 chiffres consecutives
-        if (somme0 == somme1) {
+        if (somme0 == somme1 && somme0+somme1==n) {
             int k;
             for(k=0;k<(n-2);k++){
                 if ((M[i][k] == M[i][k+1]) && (M[i][k] == M[i][k+2])) {
@@ -234,7 +287,7 @@ bool verif_colonnes_matrice( int** M, int n, bool indice) {
         }
 
         // si le nombre de zero et de 1 est correct, verifier si il n'y a pas plus de 2 chiffres consecutives
-        if (somme0 == somme1) {
+        if (somme0 == somme1 && somme0+somme1==n ) {
             int k;
             for (k = 0; k < (n - 2); k++) {
                 if ((M[k][i] == M[k + 1][i]) && (M[k][i] == M[k + 2][i])) {
@@ -263,6 +316,7 @@ bool verif_colonnes_matrice( int** M, int n, bool indice) {
         return true;
     }
 }
+
 bool verif_identique( int** M, int n)
 {
     int i, j, k, sl, sc;
@@ -475,6 +529,115 @@ int ** remplir_grille_jeux(int **M,int n){
         }
         default:{
             break;
+        }
+    }
+}
+bool verif_remp_matrice(int **M, int n)
+{
+    int i, j; 
+    bool res = true;
+    for (i=0; i < n ; i++){
+        for(j=0; j < n ; j++)
+        {
+            if(M[i][j]== -1)
+                return false;
+        }
+    }
+    return res;
+}
+
+bool verif_cases_tableau(int *M, int n)
+{
+    int j, cpt;
+    cpt = 0;
+    for(j=0 ; j < n ; j++){
+        if(M[j] == -1)
+        {
+            cpt +=1; 
+        }
+    }
+    if( cpt == 2)
+        return true ; 
+    return false; 
+}
+
+bool ligne_remplie(int *M, int n){
+
+    int i, cpt;
+    cpt = 0;
+    for(i=0 ; i < n ; i++){
+        if(M[i] == 0 || M[i] == 1)
+            cpt ++;
+    }
+    if( cpt == n)
+        return true ;
+    return false;
+}
+
+
+// comparer lignes et colonnes
+// ligne ou colonne est rempli ou non avec 2 vals
+
+/*
+indice5{
+
+   comparer_ligne_entre_elles() // de la premiere a la derniere
+   comparer_colonne_entre_elles() // de la premiere a la derniere
+
+   comparaison_ligne_ou_colonne(matrice,taille){
+        boucle 1 : parcours les lignes jusqu'a n
+                    verifier si la ligne est remplie, 
+                    si oui: 
+                        verifier si ligne secondaire ( i+1) a deux cases en moins,
+                        si oui
+                            compare ligne principale avec la ligne a la position secondaire
+                            si les 2 lignes sont identiques sauf dans les positions des cases vides:
+                                afficher l'indice (le texte)
+                            sinon:
+                                ne rien afficher
+                                passer a la ligne suivante
+                        sinon
+                            passer a la ligne suivante
+                    sinon:
+                        passer a la ligne suivante
+   }
+}
+*/
+
+void except_indice(int **M, int n, bool indice){
+    if(indice == true){
+        // comparaison de ligne
+        int i, j;
+        int cpt1 =0;
+        int cpt2 =0;
+        bool first, second;
+        //parcourir la ligne principale
+        for(i=0 ; i < n ; i++){
+            
+            first = verif_remp_matrice(M[i], n);
+            // parcourir la ligne secondaire
+            for(j=0;j<n;j++){
+                // verifier si la ligne est remplie
+                if(first == true){
+                    //verifier si la ligne secondaire a deux cases en moins
+                    second = verif_cases_tableau(M[j], n);
+                    if(second == true){
+                        //compare ligne principale avec la ligne a la position secondaire
+                        for(int k=0;k<n;k++){
+                            if(M[i][k] == M[j][k])
+                                cpt1++;
+                            if(M[j][k] == -1)
+                                cpt2++;
+                        }
+                        if(cpt1 == n-2 && cpt2 == 2){
+                            // afficher la ligne principale
+                            // afficher la ligne secondaire$
+                            // dire a l'utilisateur de remplir de sorte a ce qu'ils ne soient pas identiques
+                            printf("afficher indice\n");
+                        }
+                    }
+                }
+            }
         }
     }
 }

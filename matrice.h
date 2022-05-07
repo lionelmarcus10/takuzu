@@ -21,4 +21,5 @@ void afficher_matrice(int** M,int n);
 bool verif_identique( int** M, int n);
 bool coup_correct(int **M,int n,bool indice);
 int ** remplir_grille_jeux(int **M,int n);
+int** create_mat_masq(int n, int **M)
 #endif //UNTITLED6_MATRICE_H
