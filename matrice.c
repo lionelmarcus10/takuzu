@@ -12,6 +12,40 @@
 #include <stdbool.h>
 
 
+int** remplir_mat_user(int n, int** M)
+{
+    int i =0;
+    bool F ;
+    char res;
+    int lig, col, val;
+
+    do{
+        do{
+            printf("\nVeuillez saisir la ligne de la case numéro %d ", i);
+            scanf("%d", lig);
+        }while(lig < 0 || lig >= n);
+
+        do{
+            printf("\nVeuillez saisir la colonne de la case numéro %d", i);
+            scanf("%d", col);
+        }while(col < 0 || col >= n);
+
+        do{
+            printf("\nQuelle valeur voulez vous saisir ");
+            scanf("%d", &val);
+        }while(val != 0 || val != 1);
+
+        M[lig][col] = val;
+    
+        do{
+            printf("Voulez-vous saisir une autre valeur ? \n  Y pour Oui et  N pour Non ");
+            scanf("%c ",res);
+        }while(res != "Y" && res !="N" );
+    }while(res == "Y");
+    return M; 
+}
+
+
 int** create_matrice(int n, int** M)
 {
     int i =0;
@@ -38,7 +72,7 @@ int** create_masque(int n, int** M)
             M[i][k] = 0;
         }
     }
-    if(n==4)
+    if(n == 4 )   
     {
         do{
             printf("Combien de cases visibles voulez vous avoir (pas plus 6) ?");
@@ -70,7 +104,7 @@ int** create_masque(int n, int** M)
     return M;
 }
 
-int** create_mat_masq(int n, int **M)
+int** create_matby_masq(int n, int **M)
 {
     bool cond = false;
 
@@ -93,8 +127,6 @@ int** create_mat_masq(int n, int **M)
                 }
             }
         }
-
-
         // verif col: 
         for (int i=0; i < n ; i++)
         {
@@ -105,7 +137,7 @@ int** create_mat_masq(int n, int **M)
                     break;
                 }
             }
-        }
+        } 
         // verif lig
         for (int i=0; i < n ; i++)
         {
@@ -119,6 +151,43 @@ int** create_mat_masq(int n, int **M)
         }
     }while(cond == true);
 
+    return M;
+}
+
+int** create_masque_auto(int n, int** M)
+{
+    int nb, lig, col;
+    M = (int**) malloc(n * sizeof(int*));
+    for(int p ; p < n ; p++)
+    {
+        *(M+i) = (int*) malloc(n * sizeof(int));
+        for(int k = 0; k < n; k++)
+        {
+            M[p][k] = 0;
+        }
+    }
+    if(n==4)
+    {
+        for(int l=0; l < 6; l++)
+        {
+            rand(time(NULL));
+            int i = rand() % 4;
+            int j = rand() % 4;
+            M[i][j]=1;
+        }
+    }
+    else
+    {
+        if(n==8);
+        for(int h=0; h < 28; h++)
+        {
+            rand(time(NULL));
+            int i = rand() % 8;
+            int j = rand() % 8;
+            M[i][j]=1;
+        }
+        
+    }
     return M;
 }
 
@@ -166,15 +235,44 @@ int** choix_menu(int a){
         scanf("%d",&taille);
     }while(taille != 1 && taille != 2 && taille !=3);
 
-    do {
-        printf("\nSaisir: \n\t1 - Pour saisir manuellement un masque\n\t2 - Pour generer automatiquement un masque \n\t3 - Pour jouer");
-        scanf("%d", &b);
-    }while(b!=1 && b!=2 && b!=3);
     switch(a){
         case 1:
         {
-            create_masque(taille, M);
-            
+            do {
+                 printf("\nSaisir: \n\t1 - Pour saisir manuellement un masque\n\t2 - Pour generer automatiquement un masque \n\t3 - Pour jouer");
+                 scanf("%d", &b);
+            }while(b!=1 && b!=2 && b!=3);
+            switch(b){
+                case 1:{
+                        printf("Grille Masque\n");
+                        M = create_masque(taille, M);
+                        afficher_matrice(M);
+                        M = create_matby_masq(taille,M);
+                        printf("Grille jeux\n");
+                        afficher_matrice(M);
+                        return M;
+                        break;
+                }
+                case 2:{
+                        printf("Grille Masque\n");
+                        M = create_masque_auto(taille, M);
+                        afficher_matrice(M);
+                        M = create_matby_masq(taille,M);
+                        printf("Grille jeux\n");
+                        afficher_matrice(M);
+                        return M;
+                        break;   
+                }
+                default:{
+                        printf("Grille Masque\n");
+                        M = create_matrice(taille, M);
+                        printf("Grille jeux\n");
+                        M = remplir_grille_jeux(M, taille);
+                        return M;
+                        break;
+                }
+            }
+            return M;
             break;
         }
         default:
@@ -532,6 +630,114 @@ int ** remplir_grille_jeux(int **M,int n){
         }
     }
 }
+
+int ** remplir_grille_masque(int **M,int n){
+    switch(n){
+        case 4:{
+            M[0][0] = 1;
+            M[0][1] = 0;
+            M[0][2] = 0;
+            M[0][3] = 0;
+
+            M[1][0] = 0;
+            M[1][1] = 0;
+            M[1][2] = 1;
+            M[1][3] = 0;
+
+            M[2][0] = 1;
+            M[2][1] = 0;
+            M[2][2] = 1;
+            M[2][3] = 1;
+
+            M[3][0] = 0;
+            M[3][1] = 1;
+            M[3][2] = 0;
+            M[3][3] = 0;
+            return M;
+            break;
+        }
+        case 8:{
+            M[0][0] = 1;
+            M[0][1] = 0;
+            M[0][2] = 1;
+            M[0][3] = 1;
+            M[0][4] = 0;
+            M[0][5] = 1;
+            M[0][6] = 0;
+            M[0][7] = 1;
+
+            M[1][0] = 0;
+            M[1][1] = 0;
+            M[1][2] = 1;
+            M[1][3] = 0;
+            M[1][4] = 0;
+            M[1][5] = 0;
+            M[1][6] = 0;
+            M[1][7] = 0;
+
+            M[2][0] = 1;
+            M[2][1] = 0;
+            M[2][2] = 0;
+            M[2][3] = 0;
+            M[2][4] = 0;
+            M[2][5] = 0;
+            M[2][6] = 0;
+            M[2][7] = 1;
+
+            M[3][0] = 1;
+            M[3][1] = 0;
+            M[3][2] = 1;
+            M[3][3] = 0;
+            M[3][4] = 0;
+            M[3][5] = 1;
+            M[3][6] = 1;
+            M[3][7] = 0;
+
+            M[4][0] = 1;
+            M[4][1] = 0;
+            M[4][2] = 0;
+            M[4][3] = 0;
+            M[4][4] = 1;
+            M[4][5] = 0;
+            M[4][6] = 0;
+            M[4][7] = 1;
+
+            M[5][0] = 0;
+            M[5][1] = 0;
+            M[5][2] = 0;
+            M[5][3] = 0;
+            M[5][4] = 1;
+            M[5][5] = 0;
+            M[5][6] = 0;
+            M[5][7] = 0;
+
+            M[6][0] = 0;
+            M[6][1] = 1;
+            M[6][2] = 1;
+            M[6][3] = 1;
+            M[6][4] = 1;
+            M[6][5] = 1;
+            M[6][6] = 0;
+            M[6][7] = 0;
+
+            M[7][0] = 0;
+            M[7][1] = 1;
+            M[7][2] = 0;
+            M[7][3] = 1;
+            M[7][4] = 0;
+            M[7][5] = 0;
+            M[7][6] = 1;
+            M[7][7] = 0;
+
+            return M;
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+}
+
 bool verif_remp_matrice(int **M, int n)
 {
     int i, j; 
@@ -546,12 +752,12 @@ bool verif_remp_matrice(int **M, int n)
     return res;
 }
 
-bool verif_cases_tableau(int *M, int n)
+bool verif_cases_tableau(int **M,int ligne, int n)
 {
     int j, cpt;
     cpt = 0;
     for(j=0 ; j < n ; j++){
-        if(M[j] == -1)
+        if(M[ligne][j] == -1)
         {
             cpt +=1; 
         }
@@ -561,12 +767,12 @@ bool verif_cases_tableau(int *M, int n)
     return false; 
 }
 
-bool ligne_remplie(int *M, int n){
+bool ligne_remplie(int **M,int ligne ,int n){
 
     int i, cpt;
     cpt = 0;
     for(i=0 ; i < n ; i++){
-        if(M[i] == 0 || M[i] == 1)
+        if(M[ligne][i] == 0 || M[ligne][i] == 1)
             cpt ++;
     }
     if( cpt == n)
@@ -603,6 +809,13 @@ indice5{
    }
 }
 */
+bool verif_case_remp_vide(int i,int j, int **M){
+    bool F ;
+    if(M[i][j] == 0 || M[i][j] == 1){
+        return true ;
+    }
+    return false; 
+}
 
 void except_indice(int **M, int n, bool indice){
     if(indice == true){
@@ -614,13 +827,13 @@ void except_indice(int **M, int n, bool indice){
         //parcourir la ligne principale
         for(i=0 ; i < n ; i++){
             
-            first = verif_remp_matrice(M[i], n);
+            first = ligne_remplie(M,i ,n);
             // parcourir la ligne secondaire
             for(j=0;j<n;j++){
                 // verifier si la ligne est remplie
                 if(first == true){
                     //verifier si la ligne secondaire a deux cases en moins
-                    second = verif_cases_tableau(M[j], n);
+                    second = verif_cases_tableau(M,j,n);
                     if(second == true){
                         //compare ligne principale avec la ligne a la position secondaire
                         for(int k=0;k<n;k++){
@@ -630,10 +843,12 @@ void except_indice(int **M, int n, bool indice){
                                 cpt2++;
                         }
                         if(cpt1 == n-2 && cpt2 == 2){
+                            printf("");
+                            printf("");
                             // afficher la ligne principale
-                            // afficher la ligne secondaire$
+                            // afficher la ligne secondaire
                             // dire a l'utilisateur de remplir de sorte a ce qu'ils ne soient pas identiques
-                            printf("afficher indice\n");
+                            printf("afficher indice\n %d", i);
                         }
                     }
                 }
