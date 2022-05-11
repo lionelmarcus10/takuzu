@@ -110,7 +110,7 @@ int** create_masque(int n, int** M)
 int** create_matby_masq(int n, int **M)
 {
     bool cond = false;
-
+    srand(time(NULL));
     do{
 
         for (int i=0; i < n ; i++){
@@ -121,17 +121,15 @@ int** create_matby_masq(int n, int **M)
                 }
                 else
                 {
+                    
                     if(M[i][j]==1)
                     {                    
-                        srand(time(NULL));
+                        
                         M[i][j]= rand() % 2;;
                     }
                 }
             }
         }
-
-        afficher_matrice(M,n);
-
         // verif lig:
         for (int i=0; i < n ; i++)
         {
@@ -155,7 +153,7 @@ int** create_matby_masq(int n, int **M)
             }
         }
     }while(cond == true);
-
+    afficher_matrice(M,n);
     return M;
 }
 
@@ -264,7 +262,6 @@ int** choix_menu1(int taille){
                 M = create_masque(taille, M);
                 printf("Grille Masque\n");
                 afficher_matrice(M,taille);
-                printf('s');
                 M = create_matby_masq(taille,M);
                 printf("Grille jeux\n");
                 afficher_matrice(M,taille);
