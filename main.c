@@ -37,11 +37,12 @@ int main()
 
                     afficher_matrice(temporary,taille);
                     temporary = remplir_mat_user(taille,temporary,grille_jeux);
+
                     if(verif_remp_matrice(temporary,taille) == true){
-                        if(coup_correct(temporary,taille,false) == false){
+                        if(coup_correct(temporary,taille,true) == false){
                             vie--;
                             if(vie > 0){
-                                printf("\nIl vous reste %d",vie);
+                                printf("\nIl vous reste %d VIE",vie);
                                 coup_correct(temporary,taille,true);
                             }else{
                                 printf("\nIl ne vous reste plus de vie");
@@ -59,15 +60,16 @@ int main()
 
                     }else{
 
-                        if(verif_mnr_rules(temporary,taille) == false){
+                        if(verif_mnr_rules(temporary,taille,false) == false){
                             vie--;
                             if(vie > 0){
+                                verif_mnr_rules(temporary,taille,true);
                                 coup_correct(temporary,taille,true);
                                 printf("\npeut etre que votre matrice n'est pas complètement rempli");
-                                printf("\nIl vous reste %d",vie);
+                                printf("\nIl vous reste %d vie",vie);
                             }
                             if(vie==0)
-                                printf("\nIl vous reste %d",vie);
+                                printf("\nIl ne vous reste plus de vie");
                         }
 
                     }
@@ -89,7 +91,7 @@ int main()
                         if(coup_correct(temporary,taille,false) == false){
                             vie--;
                             if(vie > 0){
-                                printf("\nIl vous reste %d",vie);
+                                printf("\nIl vous reste %d vie",vie);
                                 coup_correct(temporary,taille,true);
                             }else{
                                 printf("\nIl ne vous reste plus de vie");
@@ -103,13 +105,13 @@ int main()
                         }
                     }else{
 
-                        if(verif_mnr_rules(temporary,taille) == false){
-
+                        if(verif_mnr_rules(temporary,taille,false) == false){
                             vie--;
                             if(vie > 0){
+                                verif_mnr_rules(temporary,taille,true);
                                 coup_correct(temporary,taille,true);
-                            printf("\npeut etre que votre matrice n'est pas complètement rempli");
-                            printf("\nIl vous reste %d",vie);
+                                printf("\npeut etre que votre matrice n'est pas complètement rempli");
+                                printf("\nIl vous reste %d",vie);
                             }else{
                                 printf("Il ne vous reste plus de vie");
                                 break;
@@ -129,6 +131,9 @@ int main()
            if(menu_num == 2){
                break;
            }else{
+               gen_matrice_sol_auto(4);
+               gen_matrice_sol_auto(8);
+               gen_matrice_sol_auto(16);
                break;
            }
        }

@@ -8,7 +8,7 @@
 // creer un mask
 // creer une fonction qui verifie la matrice rempli ( lignes , colonnes , identité entre les lignes et aussi entre les colonnes)
 
-int** create_matrice(int , int** M);
+int** create_matrice(int n, int** M);
 int** create_masque(int n, int** M);
 int ** remplir_matrice_solution(int **M,int n);
 bool verif_colonnes_matrice( int** M, int n,bool indice);
@@ -18,7 +18,7 @@ int menu();
 bool coup_valide(int ** M,int n);
 int** choix_menu1(int taille);
 int ask_taille();
-bool veri_lignes_matrice( int** M, int n,bool indice);
+bool verif_lignes_matrice( int** M, int n,bool indice);
 void afficher_matrice(int** M,int );
 bool verif_identique( int** M, int n,bool indice);
 bool coup_correct(int **M,int n,bool indice);
@@ -32,6 +32,11 @@ bool verif_remp_matrice(int **M, int n);
 void except_indice(int **M, int n, bool indice);
 int** remplir_mat_user(int n, int** M,int ** jeux_grille);
 bool verif_case_remp_vide(int i,int j, int **M);
-bool verif_mnr_rules(int **M, int n);
+bool verif_mnr_rules(int **M, int n,bool indice);
 int **copy_mat(int** new,int ** copy,int n);
+void tobinary(int * T,int number ,int taille);
+void autom(int**M,int taille);
+void solutions(int* matligne,int taille);
+int sol_len(int taille);
+int** gen_matrice_sol_auto(int taille);
 #endif //UNTITLED6_MATRICE_H
