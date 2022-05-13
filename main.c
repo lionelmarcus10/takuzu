@@ -131,9 +131,10 @@ int main()
            if(menu_num == 2){
                break;
            }else{
-               gen_matrice_sol_auto(4);
-               gen_matrice_sol_auto(8);
-               gen_matrice_sol_auto(16);
+               int taille = ask_taille();
+               // menu
+               affiche_ligne_sol(taille);
+               gen_matrice_sol_auto(taille,true);
                break;
            }
        }

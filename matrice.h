@@ -38,5 +38,6 @@ void tobinary(int * T,int number ,int taille);
 void autom(int**M,int taille);
 void solutions(int* matligne,int taille);
 int sol_len(int taille);
-int** gen_matrice_sol_auto(int taille);
+int** gen_matrice_sol_auto(int taille, bool indice);
+void affiche_ligne_sol(int taille);
 #endif //UNTITLED6_MATRICE_H

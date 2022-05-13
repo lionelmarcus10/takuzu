@@ -10,6 +10,11 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdbool.h>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // permet de remplir une grille jeux a travers des informations données par le joeur
 int** remplir_mat_user(int n, int** M,int** jeux_grille)
@@ -968,7 +973,7 @@ int ** remplir_une_ligne(int**M,int * matrice_ligne,int ligne,int taille){
 
 // generer automatiquement une matrice / grille solution pour une taille donné
 // optimiser et optimiser aussi le menu
-int** gen_matrice_sol_auto(int taille){
+int** gen_matrice_sol_auto(int taille, bool indice){
 
     int sol_taille = sol_len(taille);
     int temp[sol_taille];
@@ -985,12 +990,15 @@ int** gen_matrice_sol_auto(int taille){
 
 
     int* matrice_sol = (int*) malloc(sizeof(int)*taille);
+
     do{
         // generer automatiquement une suite de nombre qui en binaire sont solution d'une ligne
+
         for(int j=0;j<taille;j++){
             matrice_sol[j] = sol[rand()% sol_taille];
 
             // verifier si elle appartien deja a matrice sol ou pas à partir de j = 1
+
             // tant que oui, chercher a attribuer une autre valeur et checker
 
         }
@@ -1007,6 +1015,20 @@ int** gen_matrice_sol_auto(int taille){
             M = remplir_une_ligne(M,temp,l,taille);
         }
     }while(coup_correct(M,taille,false) == false);
+    if(indice == true){
+        printf("\nGeneration de nombre...\n");
+        Sleep(2500);
+        printf("\nLes nombres generes sont :");
+        Sleep(800);
+        for(int g=0;g<taille;g++){
+            printf(" %d ",matrice_sol[g]);
+            Sleep(800);
+        }
+        printf("\n");
+    }
+    Sleep(1000);
+    printf("\nAffichage de la grille avec les nombres binaires integres ligne par ligne\n");
+    Sleep(1000);
     afficher_matrice(M,taille);
 
 }
@@ -1049,6 +1071,26 @@ int sol_len(int taille){
             return 1296;
         }
 
+    }
+}
+
+
+// afficher toute les solutions possible pour une ligne
+void affiche_ligne_sol(int taille){
+
+    int sol_taille = sol_len(taille);
+    int sol[sol_taille];
+    int * allsol = (int*) malloc(sizeof(int)*sol_taille);
+    solutions(allsol,taille);
+    printf("\nil y'a en tout %d solutions possible pour une ligne ou une colonne\n",sol_taille);
+    printf("\nToute les solutions possibles pour une ligne ou une colonne sont : \n\n");
+    for(int z =0;z<sol_taille;z++){
+        tobinary(sol,allsol[z],taille);
+        printf("%d |--->  ",allsol[z]);
+        for(int v=0;v<taille;v++){
+            printf(" %d ",sol[v]);
+        }
+        printf("\n");
     }
 }
 
