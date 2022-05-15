@@ -124,7 +124,7 @@ int** create_masque(int n, int** M)
     {
         do{
             printf("\nVeuillez saisir le numero de la ligne du masque que vous voulez afficher: ");
-            int b = scanf("%d",&nb);
+            int b = scanf("%d",&lig);
             if(b != 1){
                 fflush(stdin);
             }
@@ -143,6 +143,7 @@ int** create_masque(int n, int** M)
 // permet de creer une grille jeux a partir d'une grille masque
 int** create_matby_masq(int n, int **M)
 {
+
     bool cond = false;
     srand(time(NULL));
     do{
@@ -186,6 +187,7 @@ int** create_matby_masq(int n, int **M)
                 }
             }
         }
+        afficher_matrice(M,n);
     }while(cond == true);
     return M;
 }
@@ -1216,7 +1218,7 @@ void affiche_ligne_sol(int taille){
 // resoudre une matrice aléatoirement
 void automatic_resolution(int taille){
 
-    int **M, **masq, **inter,**sol;
+    int **M,**sol;
     M = create_matrice(taille,M);
     sol = create_matrice(taille,sol);
 
