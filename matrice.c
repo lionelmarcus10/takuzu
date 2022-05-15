@@ -26,21 +26,30 @@ int** remplir_mat_user(int n, int** M,int** jeux_grille)
         int lig, col, val;
         do{
             printf("\nVeuillez saisir le numero de la ligne de la case que vous voulez editer: ");
-            scanf("%d", &lig);
+            int b = scanf("%d",&lig);
+            if(b != 1){
+                fflush(stdin);
+            }
         }while(lig <= 0 || lig > n);
         lig--;
         do{
             printf("\nVeuillez saisir le numero de la colonne de la case que vous voulez editer: ");
-            scanf("%d", &col);
+            int b = scanf("%d",&col);
+            if(b != 1){
+                fflush(stdin);
+            }
         }while(col <= 0 || col > n);
         col--;
         do{
             printf("\nQuelle valeur voulez vous saisir (0 ou 1 ) : ");
-            scanf("%d", &val);
+            int b = scanf("%d",&val);
+            if(b != 1){
+                fflush(stdin);
+            }
         }while(val != 0 && val != 1);
 
         if(jeux_grille[lig][col] != -1){
-            printf("\nVeuillez saisir d'autres coordonnées de cases car celle ci fait partie de la grille de jeux par défaut\n");
+            printf("\nVeuillez saisir d'autres coordonnees de cases car celle ci fait partie de la grille de jeux par defaut\n");
         }else{
 
             *(*(M+lig)+col) = val;
@@ -85,7 +94,10 @@ int** create_masque(int n, int** M)
     {
         do{
             printf("\nCombien de cases visibles voulez vous avoir (pas plus 6) ?");
-            scanf("%d", &nb);
+            int b = scanf("%d",&nb);
+            if(b != 1){
+                fflush(stdin);
+            }
         }while(nb >6);
     }
     else
@@ -93,15 +105,29 @@ int** create_masque(int n, int** M)
         if(n==8){
             do{
                 printf("\nCombien de cases visibles voulez vous avoir (pas plus 28) ?");
-                scanf("%d", &nb);
+                int b = scanf("%d",&nb);
+                if(b != 1){
+                    fflush(stdin);
+                }
             }while(nb >28);
+        }else{
+            do{
+                printf("\nCombien de cases visibles voulez vous avoir (pas plus 126) ?");
+                int b = scanf("%d",&nb);
+                if(b != 1){
+                    fflush(stdin);
+                }
+            }while(nb >126);
         }
     }
     for(int i=0; i < nb; i++)
     {
         do{
             printf("\nVeuillez saisir le numero de la ligne du masque que vous voulez afficher: ");
-            scanf("%d", &lig);
+            int b = scanf("%d",&nb);
+            if(b != 1){
+                fflush(stdin);
+            }
         }while(lig <= 0 || lig > n);
 
         do{
@@ -169,11 +195,11 @@ int** create_masque_auto(int n, int** M)
 {
     srand(time(NULL));
     int nb, lig, col;
-    M = (int**) malloc(n * sizeof(int*));
+    //M = (int**) malloc(n * sizeof(int*));
 
     for(int p ; p < n ; p++)
     {
-        *(M+p) = (int*) malloc(n * sizeof(int));
+        //*(M+p) = (int*) malloc(n * sizeof(int));
         for(int k = 0; k < n; k++)
         {
             M[p][k] = 0;
@@ -196,6 +222,13 @@ int** create_masque_auto(int n, int** M)
             {
                 int i = rand() % 8;
                 int j = rand() % 8;
+                M[i][j]=1;
+            }
+        }else{
+            for(int h=0; h < 126; h++)
+            {
+                int i = rand() % 16;
+                int j = rand() % 16;
                 M[i][j]=1;
             }
         }
@@ -225,7 +258,11 @@ bool rejouer()
     int a;
     do {
         printf("\nSaisir:\n\n0 - Pour arreter de jouer\n1 - Pour rejouer\n Saisir :");
-        scanf("%d", &a);
+        int b = scanf("%d",&a);
+        if(b != 1){
+            a = -1;
+            fflush(stdin);
+        }
     }while(a!=0 && a!=1);
     if(a == 1)
         return true;
@@ -237,9 +274,12 @@ int menu()
 {
     int a;
     do{
-        printf("\nSaisir: \n\n1 - Resoudre une grille\n2-  Résoudre automatiquement une grille de Takuzu\n3- Générer une grille de Takuzu\n");
+        printf("\nSaisir: \n\n1 - Resoudre une grille\n2-  Resoudre automatiquement une grille de Takuzu\n3- Generer une grille de Takuzu\n");
         printf("\nSaisir : ");
-        scanf("%d",&a);
+        int b = scanf("%d",&a);
+        if(b != 1){
+            fflush(stdin);
+        }
         printf("\n");
     }while(a!=1 && a!=2 && a!=3);
 
@@ -251,7 +291,11 @@ int ask_taille(){
     int taille;
     do{
         printf("\nChoisir la taille de la grille : \n \t1- 4*4\n\t2- 8*8\n\t3- 16*16\nSaisir un numero: ");
-        scanf("%d",&taille);
+        int b = scanf("%d",&taille);
+        if(b != 1){
+            fflush(stdin);
+            taille = -1;
+        }
     }while(taille != 1 && taille != 2 && taille !=3);
 
     if(taille == 1)
@@ -265,13 +309,16 @@ int ask_taille(){
 // elle retourne une matrice en fonction des choix du joeur et celle pourra etre utilisé dans le jeux
 int** choix_menu1(int taille){
     int **M;
-    int b;
+    int fb;
 
     do {
          printf("\nSaisir: \n\t1 - Pour saisir manuellement un masque\n\t2 - Pour generer automatiquement un masque \n\t3 - Pour jouer\n saisir : ");
-         scanf("%d", &b);
-    }while(b!=1 && b!=2 && b!=3);
-    switch(b){
+        int b = scanf("%d",&fb);
+        if(b != 1){
+            fflush(stdin);
+        }
+    }while(fb!=1 && fb!=2 && fb!=3);
+    switch(fb){
         case 1:{
 
                 M = create_masque(taille, M);
@@ -284,15 +331,15 @@ int** choix_menu1(int taille){
                 break;
         }
         case 2:{
-                printf("Grille Masque\n");
-                M = create_matrice(taille,M);
-                M = create_masque_auto(taille, M);
-                afficher_matrice(M,taille);
-                M = create_matby_masq(taille,M);
-                printf("Grille jeux\n");
-                afficher_matrice(M,taille);
-                return M;
-                break;
+            printf("Grille Masque\n");
+            M = create_matrice(taille,M);
+            M = create_masque_auto(taille, M);
+            afficher_matrice(M,taille);
+            M = create_matby_masq(taille,M);
+            printf("Grille jeux\n");
+            afficher_matrice(M,taille);
+            return M;
+            break;
         }
         default:{
 
@@ -305,7 +352,6 @@ int** choix_menu1(int taille){
                     afficher_matrice(temp,taille);
                     printf("Grille jeux\n");
                     afficher_matrice(M,taille);
-
                     return M;
                     break;
         }
@@ -334,7 +380,6 @@ void afficher_matrice(int ** M, int n){
         printf("%d \t",i+1);
         for (j = 0; j <n; j++)
         {
-
             printf("%d \t", M[i][j]);
         }
         printf("\n");
@@ -373,11 +418,11 @@ bool verif_lignes_matrice( int** M, int n,bool indice){
                         if(M[i][k]==0)
                         {
                             printf("Entre deux 0, il ne peut y avoir qu'un 1");
-                            printf("A gauche,a droite d’une série de deux 0, il ne peut y avoir qu’un 1 ");
+                            printf("A gauche,a droite d’une serie de deux 0, il ne peut y avoir qu’un 1 ");
                         }
                         else{
                             printf("Entre deux 1, il ne peut y avoir qu'un 0 ");
-                            printf("A gauche,a droite d’une série de deux 1, il ne peut y avoir qu’un 0 ");
+                            printf("A gauche,a droite d’une serie de deux 1, il ne peut y avoir qu’un 0 ");
                         }
                     }
                     break;
@@ -424,10 +469,10 @@ bool verif_colonnes_matrice( int** M, int n, bool indice) {
 
                         if (M[k][i] == 0) {
                             printf("Entre deux 0, il ne peut y avoir qu'un 1");
-                            printf("Au dessus,en dessous d’une série de deux 0, il ne peut y avoir qu’un 1");
+                            printf("Au dessus,en dessous d’une serie de deux 0, il ne peut y avoir qu’un 1");
                         } else {
                             printf("Entre deux 1, il ne peut y avoir qu'un 0");
-                            printf("Au dessus,en dessous d’une série de deux 1, il ne peut y avoir qu’un 0");
+                            printf("Au dessus,en dessous d’une serie de deux 1, il ne peut y avoir qu’un 0");
                         }
                     }
                     break;
@@ -826,6 +871,23 @@ bool verif_cases_tableau(int **M,int ligne, int n)
     return false; 
 }
 
+// verifier si il manque 2 cases dans une colonne
+// permettra de detecter des situations pour afficher l'indice 5 ( du pdf de presentation du projet )
+bool verif_cases_col_tableau(int **M,int colonne, int n)
+{
+    int j, cpt;
+    cpt = 0;
+    for(j=0 ; j < n ; j++){
+        if(M[j][colonne] == -1)
+        {
+            cpt +=1; 
+        }
+    }
+    if( cpt == 2)
+        return true ; 
+    return false; 
+}
+
 // verifie si une ligne est completement rempli ou pas
 bool ligne_remplie(int **M,int ligne ,int n){
 
@@ -840,8 +902,23 @@ bool ligne_remplie(int **M,int ligne ,int n){
     return false;
 }
 
+bool colonne_remplie(int**M, int colonne, int n){
+    int j, cpt;
+    cpt = 0;
+    for(j= 0; j< n; j++)
+    {
+        if(M[j][colonne]==0 || M[j][colonne]== 1)
+        {
+            cpt++;
+        }
+    }
+    if( cpt == n)
+        return true;
+    return false; 
+    
+}
+
 // permet d'afficher l'indice 5 du pdf
-//
 void except_indice(int **M, int n, bool indice){
     if(indice == true){
         // comparaison de ligne
@@ -868,12 +945,54 @@ void except_indice(int **M, int n, bool indice){
                                 cpt2++;
                         }
                         if(cpt1 == n-2 && cpt2 == 2){
-                            printf("");
-                            printf("");
                             // afficher la ligne principale
+                            for(int g = 0; g < n; g++){
+                                printf(" %d ",M[i][g]);
+                            }
                             // afficher la ligne secondaire
-                            // dire a l'utilisateur de remplir de sorte a ce qu'ils ne soient pas identiques
-                            printf("\n Veuillez remplir de telle sorte à ce que la ligne %d ne ressemble pas a la ligne  %d",i,i);
+                            for(int g = 0; g < n; g++){
+                                printf(" %d ",M[j][g]);
+                            }                            
+                            
+                            printf("\n Veuillez remplir de telle sorte à ce que la ligne %d ne ressemble pas a la ligne  %d",i+1,j+1);
+                        }
+                    }
+                }
+            }
+        }
+
+        bool first_col, second_col;
+        int cpt3, cpt4;
+        
+        //parcourir la colonne principale
+        for(i=0 ; i < n ; i++){
+            
+            first_col = colonne_remplie(M,i ,n);
+            // parcourir la colonne secondaire
+            for(j=0;j<n;j++){
+                //verifier si la colonne est remplie
+                if(first_col == true){
+                    //verifier si la colonne secondaire a deux cases en moins
+                    second_col = verif_cases_col_tableau(M,j,n);
+                    if(second_col == true){
+                        //compare colonne principale avec la colonne a la position secondaire
+                        for(int k=0;k<n;k++){
+                            if(M[k][i] == M[k][j])
+                                cpt3++;
+                            if(M[k][j] == -1)
+                                cpt4++;
+                        }
+                        if(cpt3 == n-2 && cpt4 == 2){
+                            // afficher la colonne principale
+                            for(int g = 0; g < n; g++){
+                                printf(" %d ",M[g][i]);
+                            }
+                            // afficher la colonne secondaire
+                            for(int g = 0; g < n; g++){
+                                printf(" %d ",M[g][j]);
+                            }                            
+                            
+                            printf("\n Veuillez remplir de telle sorte à ce que la ligne %d ne ressemble pas a la ligne  %d",i+1,j+1);
                         }
                     }
                 }
@@ -906,7 +1025,7 @@ bool verif_mnr_rules(int **M, int n,bool indice){
         for(j=0;j<n-2;j++){
             if(M[j][i] == M[j+1][i] && M[j][i] == M[j+2][i] && M[j][i] != -1){
                 if(indice ==true ){
-                    printf("%d = %d  = %d donc la colonne %d n' pas valide\n", M[j][i], M[j+1][i], M[j+2][i],i+1);
+                    printf("%d = %d  = %d donc la colonne %d n'est pas valide\n", M[j][i], M[j+1][i], M[j+2][i],i+1);
                 }
                 return false;
             }
@@ -950,16 +1069,13 @@ void tobinary(int * T,int number ,int taille){
 // ce soir ( menu 2 : automatiquement ou imposé matrice )
 // ce soir menu 2 imposé finir
 // finir generateur de mat
-// faire colonne_rempli
 // remplir ligne sans remplir case predefini
 // verif cases col tableau
-// faire except indice pour colonne
 // generer matrice solution
 // resoudre a partir de grille masque saisi
 // resoudre a partir de grille masque automatique
 // resoudre grille predefinie
 // remplir grille masque et grille solution et grille jeux du 16*16
-// faire les commentaires
 
 //--------------------------------------------------------------------------------------------------------------------------------
 
@@ -1025,11 +1141,13 @@ int** gen_matrice_sol_auto(int taille, bool indice){
             Sleep(800);
         }
         printf("\n");
+        Sleep(1000);
+        printf("\nAffichage de la grille avec les nombres binaires integres ligne par ligne\n");
+        Sleep(1000);
+        afficher_matrice(M,taille);
     }
-    Sleep(1000);
-    printf("\nAffichage de la grille avec les nombres binaires integres ligne par ligne\n");
-    Sleep(1000);
-    afficher_matrice(M,taille);
+    return M;
+
 
 }
 
@@ -1084,6 +1202,7 @@ void affiche_ligne_sol(int taille){
     solutions(allsol,taille);
     printf("\nil y'a en tout %d solutions possible pour une ligne ou une colonne\n",sol_taille);
     printf("\nToute les solutions possibles pour une ligne ou une colonne sont : \n\n");
+    Sleep(3000);
     for(int z =0;z<sol_taille;z++){
         tobinary(sol,allsol[z],taille);
         printf("%d |--->  ",allsol[z]);
@@ -1094,34 +1213,140 @@ void affiche_ligne_sol(int taille){
     }
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
-// a revoir
-// opti 4*4
+// resoudre une matrice aléatoirement
+void automatic_resolution(int taille){
 
-void autom(int **M,int taille){
+    int **M, **masq, **inter,**sol;
+    M = create_matrice(taille,M);
+    sol = create_matrice(taille,sol);
+
+
     afficher_matrice(M,taille);
-    int ** Z = create_matrice(taille,Z);
-    Z = copy_mat(Z,M,taille);
-    afficher_matrice(Z,taille);
-    srand(time(NULL));
+    sol = gen_matrice_sol_auto(taille,false);
+    // generer aleatoirement
+    for(int i=0;i<taille;i++){
+        for(int j=0;j<taille;j++){
+            if(M[i][j] ==-1)
+                M[i][j]= rand() % 2;
+        }
+    }
+    // comparer
     do{
         for(int i=0;i<taille;i++){
             for(int j=0;j<taille;j++){
-                if(M[i][j] ==-1)
-                    Z[i][j]= rand() % 2;
+                if(M[i][j] != sol[i][j])
+                    M[i][j]= rand() % 2;
             }
         }
-    }while(coup_valide(Z,taille) != true);
-
-    afficher_matrice(Z,taille);
-    printf("Fin");
+        printf("\nchargement du coup...\n");
+        Sleep(1300);
+        afficher_matrice(M,taille);
+    }while(comparer_liste(taille,M,sol) == false);
 }
 
 
-bool verif_case_remp_vide(int i,int j, int **M){
-    bool F ;
-    if(M[i][j] == 0 || M[i][j] == 1){
-        return true ;
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+// permet de generer toute les combinaisons possible pour une matrice 16*16
+void brute_sol(int taille){
+
+    int taille_sol = sol_len(taille);
+    int * sol = (int*) malloc(sizeof(int)*taille_sol);
+    solutions(sol,taille);
+
+    int ** M;
+    M = create_matrice(taille,M);
+
+    int temp[taille_sol];
+
+    // 1
+    for(int a=0;a<taille;a++){
+        tobinary(temp,sol[a],taille);
+        remplir_une_ligne(M,temp,a,taille);
+        // 2
+        for(int b=0;b<taille;b++){
+            tobinary(temp,sol[b],taille);
+            remplir_une_ligne(M,temp,b,taille);
+            // 3
+            for(int c=0;c<taille;c++){
+                tobinary(temp,sol[c],taille);
+                remplir_une_ligne(M,temp,c,taille);
+                //4
+                for(int d=0;d<taille;d++){
+                    tobinary(temp,sol[d],taille);
+                    remplir_une_ligne(M,temp,d,taille);
+                    //5
+                    for(int e=0;e<taille;e++){
+                        tobinary(temp,sol[e],taille);
+                        remplir_une_ligne(M,temp,e,taille);
+                        //6
+                        for(int f=0;f<taille;f++){
+                            tobinary(temp,sol[f],taille);
+                            remplir_une_ligne(M,temp,f,taille);
+                            // 7
+                            for(int g=0;g<taille;g++){
+                                tobinary(temp,sol[g],taille);
+                                remplir_une_ligne(M,temp,g,taille);
+                                // 8
+                                for(int h=0;h<taille;h++){
+                                    tobinary(temp,sol[h],taille);
+                                    remplir_une_ligne(M,temp,h,taille);
+                                    // 9
+                                    for(int i=0;i<taille;i++){
+                                        tobinary(temp,sol[i],taille);
+                                        remplir_une_ligne(M,temp,i,taille);
+                                        // 10
+                                        for(int j=0;j<taille;j++){
+                                            tobinary(temp,sol[j],taille);
+                                            remplir_une_ligne(M,temp,j,taille);
+                                            // 11
+                                            for(int k=0;k<taille;k++){
+                                                tobinary(temp,sol[k],taille);
+                                                remplir_une_ligne(M,temp,k,taille);
+                                                // 12
+                                                for(int l=0;l<taille;l++){
+                                                    tobinary(temp,sol[l],taille);
+                                                    remplir_une_ligne(M,temp,l,taille);
+                                                    // 13
+                                                    for(int m=0;m<taille;m++){
+                                                        tobinary(temp,sol[m],taille);
+                                                        remplir_une_ligne(M,temp,m,taille);
+                                                        // 14
+                                                        for(int n=0;n<taille;n++){
+                                                            tobinary(temp,sol[n],taille);
+                                                            remplir_une_ligne(M,temp,n,taille);
+                                                            // 15
+                                                            for(int o=0;o<taille;o++){
+                                                                tobinary(temp,sol[o],taille);
+                                                                remplir_une_ligne(M,temp,o,taille);
+                                                                // 16
+                                                                for(int p=0;p<taille;p++){
+                                                                    tobinary(temp,sol[p],taille);
+                                                                    remplir_une_ligne(M,temp,p,taille);
+                                                                    if(coup_correct(M,taille,false) == true){
+                                                                        afficher_matrice(M,taille);
+                                                                        printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",sol[a],sol[b],sol[c],sol[d],sol[e],sol[f],sol[g],sol[h],sol[i],sol[j],sol[k],sol[l],sol[m],sol[n],sol[o],sol[p]);
+                                                                        break;
+                                                                    }else{
+                                                                        printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",sol[a],sol[b],sol[c],sol[d],sol[e],sol[f],sol[g],sol[h],sol[i],sol[j],sol[k],sol[l],sol[m],sol[n],sol[o],sol[p]);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
     }
-    return false;
 }

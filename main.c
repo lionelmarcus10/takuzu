@@ -29,7 +29,7 @@ int main()
            temporary = copy_mat(temporary,grille_jeux,taille);
            //-----------------------------------------------------
            if(restriction == true){
-               printf("\n Pour cette partie, toute les solutions ne sont pas acceptés.\nVous devez trouver une solution précise\n");
+               printf("\n Pour cette partie, toute les solutions ne sont pas acceptes.\nVous devez trouver une solution precise\n");
                // boucle du jeux
                printf("\n\n Debut de la partie\n\n");
 
@@ -52,7 +52,7 @@ int main()
                              if(coup_valide(temporary,taille) == false){
                                 printf("\nCoup valide mais incorrect !\n");
                              }else{
-                                printf("\n\nVous avez trouvé la solution\n\n");
+                                printf("\n\nVous avez trouve la solution\n\n");
                                 resolved = true;
                                 break;
                             }
@@ -65,7 +65,7 @@ int main()
                             if(vie > 0){
                                 verif_mnr_rules(temporary,taille,true);
                                 coup_correct(temporary,taille,true);
-                                printf("\npeut etre que votre matrice n'est pas complètement rempli");
+                                printf("\npeut etre que votre matrice n'est pas completement rempli");
                                 printf("\nIl vous reste %d vie",vie);
                             }
                             if(vie==0)
@@ -99,7 +99,7 @@ int main()
                             }
 
                         }else{
-                            printf("\nVous avez gagné");
+                            printf("\nVous avez gagne");
                             resolved = true;
                             break;
                         }
@@ -129,13 +129,31 @@ int main()
        }
        else{
            if(menu_num == 2){
-               break;
+               int taille = ask_taille();
+               automatic_resolution(taille);
+
            }else{
                int taille = ask_taille();
+               int choix;
+               printf("\nSaisir :\n \n 1- Pour la generation de lignes (ou de colonnes) valides en fonction de la taille de la grille choisie (4x4 ou 8x8 ou 16*16)\n2- Construction d une grille complete valide a partir des lignes et colonnes valides\n\n");
+
+               do{
+                   printf("\nSaisir : ");
+                   int b = scanf("%d",&choix);
+                   if(b != 1){
+                       fflush(stdin);
+                   }
+               }while(choix != 1 && choix !=2);
                // menu
-               affiche_ligne_sol(taille);
-               gen_matrice_sol_auto(taille,true);
-               break;
+               if(choix == 1){
+                   affiche_ligne_sol(taille);
+               }else{
+                   if(taille == 16){
+                       brute_sol(taille);
+                   }else{
+                       gen_matrice_sol_auto(taille,true);
+                   }
+               }
            }
        }
        replay = rejouer();
